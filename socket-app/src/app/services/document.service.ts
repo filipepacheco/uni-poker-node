@@ -1,31 +1,19 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { Socket } from 'ngx-socket-io';
+import {Socket} from 'ngx-socket-io';
 
-import { Document } from '../models/document';
+import {Document} from '../models/document';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
+
+  constructor(private socket: Socket) { }
   currentDocument = this.socket.fromEvent<Document>('document');
   documents = this.socket.fromEvent<string[]>('documents');
 
-  constructor(private socket: Socket) { }
-
-  getDocument(id: string) {
-    this.socket.emit('getDoc', id);
-  }
-
-  newDocument() {
-    this.socket.emit('addDoc', { id: this.docId(), doc: '' });
-  }
-
-  editDocument(document: Document) {
-    this.socket.emit('editDoc', document);
-  }
-
-  private docId() {
+  private static docId() {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -34,5 +22,17 @@ export class DocumentService {
     }
 
     return text;
+  }
+
+  getDocument(id: string) {
+    this.socket.emit('getDoc', id);
+  }
+
+  newDocument() {
+    this.socket.emit('addDoc', { id: DocumentService.docId(), doc: '' });
+  }
+
+  editDocument(document: Document) {
+    this.socket.emit('editDoc', document);
   }
 }
