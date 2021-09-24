@@ -1,39 +1,70 @@
-const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+import app from "express";
+import {Server} from 'http';
+import SocketIO from 'socket.io';
+import {Game} from "./models/Game.js";
+import {Board} from "./models/Board.js";
 
-const documents = {};
+const httpServer = Server(app);
+const io = SocketIO(httpServer);
+
 
 io.on('connection', socket => {
-    let previousId;
-    const safeJoin = currentId => {
-        socket.leave(previousId);
-        socket.join(currentId, () => console.log(`Socket ${socket.id} joined room ${currentId}`));
-        previousId = currentId;
-    }
+  const documents = {};
+  let previousId;
 
-    socket.on('getDoc', docId => {
-        safeJoin(docId);
-        socket.emit('document', documents[docId]);
-    });
+  const board = new Board();
+  const game = new Game(board);
 
-    socket.on('addDoc', doc => {
-        documents[doc.id] = doc;
-        safeJoin(doc.id);
-        io.emit('documents', Object.keys(documents));
-        socket.emit('document', doc);
-    });
+  const safeJoin = (currentId, socket) => {
+    socket.leave(previousId);
+    console.log(currentId)
+    socket.join(currentId, () => console.log(`Socket ${socket.id} joined room ${currentId}`));
+    previousId = currentId;
+  }
 
-    socket.on('editDoc', doc => {
-        documents[doc.id] = doc;
-        socket.to(doc.id).emit('document', doc);
-    });
+  io.emit('documents', Object.keys(documents));
+  console.log(`Socket ${socket.id} has connected`);
 
+  socket.on('game', docId => {
+    socket.emit('game', game);
+    console.log('game', game)
+  });
+
+  socket.on('players', docId => {
+    const a = game.getPlayers()
+    socket.emit('game', a);
+    console.log('get players', a)
+  });
+
+  socket.on('addPlayer', name => {
+    game.addPlayer(name)
+    socket.emit('game', 'success');
+    console.log('add player', game.getPlayers())
+  });
+
+
+
+
+
+  socket.on('getDoc', docId => {
+    safeJoin(docId, socket);
+    socket.emit('document', documents[docId]);
+  });
+
+  socket.on('addDoc', doc => {
+    console.log(game)
+    documents[doc.id] = doc;
+    safeJoin(doc.id, socket);
     io.emit('documents', Object.keys(documents));
+    socket.emit('document', doc);
+  });
 
-    console.log(`Socket ${socket.id} has connected`);
-});
+  socket.on('editDoc', doc => {
+    documents[doc.id] = doc;
+    socket.to(doc.id).emit('document', doc);
+  });
+})
 
-http.listen(4444, () => {
-    console.log('Listening on port 4444');
+httpServer.listen(4444, () => {
+  console.log('Listening on port 4444');
 });
