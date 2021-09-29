@@ -1,5 +1,11 @@
 export class Game {
   board: Board;
+  deck: Deck;
+  round: number;
+  shift: number;
+  position: number;
+  numPlayers: number;
+  currentPlayer = Player;
 }
 
 class Board {

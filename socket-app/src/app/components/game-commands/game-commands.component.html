@@ -1,17 +1,20 @@
 <div>
 
-  <div style="display: inline-grid">
+  <div style="display: inline-grid;margin-right: 50px;">
     <h3>
       Commands
     </h3>
-    <button (click)='addPlayer("filipe")'>+ Player Filipe</button><br><br>
-    <button (click)='addPlayer("jayme")'>+ Player Jayme</button><br><br>
+    <button (click)='joinRoom()'>Join Poker Room</button><br><br>
+    <label>Player Name</label>
+    <input [(ngModel)]="playerName" />
+    <button (click)='addPlayer()'>Add Player</button><br><br>
     <button (click)='getGame()'>Get Game</button><br><br>
     <button (click)='getPlayers()'>Get Players</button><br><br>
     <button (click)='giveOneTo("jayme")'>Give 1 to Jayme</button><br><br>
     <button (click)='giveOneTo("filipe")'>Give 1 to Filipe</button><br><br>
+    <button (click)='nextPlayer()'>Next</button><br><br>
   </div>
-  <div style="display: inline-grid">
+  <div style="display: inline-grid;margin-right: 50px;">
     <h3>Players</h3>
     <span *ngFor='let player of currentPlayers'>
       <b>ID</b>: {{ player.id }}<br>
@@ -24,7 +27,7 @@
 
       <br><br></span>
   </div>
-  <div style="display: inline-grid">
+  <div style="display: inline-grid;margin-right: 50px;">
     <h3>Board</h3>
     <span>
       <div *ngIf="currentGame !== undefined">
@@ -34,5 +37,20 @@
         </div>
       </div>
       <br></span>
-  </div>
+  </div><div style="display: inline-grid;margin-right: 50px;">
+  <h3>Game</h3>
+  <span>
+      <div *ngIf="currentGame !== undefined">
+        <b>Round</b>: {{currentGame.round}}<br>
+        <b>Shift</b>: {{currentGame.shift}}<br>
+        <b>Position</b>: {{currentGame.position}}<br>
+        <b>numPlayers</b>: {{currentGame.numPlayers}}<br>
+        <b>Current Playing</b>: {{currentGame.currentPlayer.name}}<br>
+        <b>Cards</b>:
+        <div *ngFor="let card of currentGame.deck._stack">
+          {{ card.suit }}, {{ card.value }}<br>
+        </div>
+      </div>
+      <br></span>
+</div>
 </div>

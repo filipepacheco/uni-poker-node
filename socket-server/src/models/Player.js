@@ -5,8 +5,14 @@ export class Player {
   cash;
 
   constructor(id, name, cash) {
-    this.id = id
-    this.cash = cash
-    this.name = name
+    this.id = id;
+    this.cash = cash;
+    this.name = name;
   }
+
+  check() {}
+  bet() {}
+  giveUp() {}
+  pay() {}
+  rise() {}
 }
