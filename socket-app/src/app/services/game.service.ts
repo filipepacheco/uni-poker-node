@@ -11,10 +11,28 @@ export class GameService {
 
   constructor(private socket: Socket) { }
   currentGame = this.socket.fromEvent<Game>('game');
-  players = this.socket.fromEvent<string[]>('players');
+  players = this.socket.fromEvent('getPlayers');
 
-  addPlayer() {
-    this.socket.emit('addPlayer', { name: 'teste', cash: 400 });
+  // emit event
+  fetchGame() {
+    this.socket.emit('fetchGame');
+  }
+
+  // listen event
+  onFetchGame() {
+    return this.socket.fromEvent('fetchGame');
+  }
+
+  addPlayer(name) {
+    this.socket.emit('addPlayer', name);
+  }
+
+  giveOneTo(name) {
+    this.socket.emit('giveOneTo', name);
+  }
+
+  onFetchPlayers() {
+    return this.socket.fromEvent('fetchPlayers');
   }
 
 }

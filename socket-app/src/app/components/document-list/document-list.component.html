@@ -1,6 +1,0 @@
-<div class='sidenav'>
-  <span (click)='newDoc()'>New Document</span>
-  <span (click)='newPlayer()'>New Player</span>
-  <span (click)='getPlayers()'>Get Players</span>
-  <span [class.selected]='docId === currentDoc' (click)='loadDoc(docId)' *ngFor='let docId of documents | async'>{{ docId }}</span>
-</div>

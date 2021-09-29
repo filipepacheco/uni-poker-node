@@ -1,6 +1,6 @@
 export class Player {
   name;
-  deck;
+  deck = [];
   cash;
 
   constructor(name, cash) {

@@ -1,70 +1,41 @@
-import app from "express";
-import {Server} from 'http';
-import SocketIO from 'socket.io';
-import {Game} from "./models/Game.js";
+import express from "express";
+import {createServer} from "http";
+import {Server} from "socket.io";
 import {Board} from "./models/Board.js";
+import {Game} from "./models/Game.js";
 
-const httpServer = Server(app);
-const io = SocketIO(httpServer);
+const app = express();
+const httpServer = createServer(app);
+httpServer.listen(4444);
+const io = new Server(httpServer, { cors: { origin: '*' } });
 
+const board = new Board();
+const game = new Game(board);
 
-io.on('connection', socket => {
-  const documents = {};
-  let previousId;
+io.on("connection", (socket) => {
+  console.log('connected')
 
-  const board = new Board();
-  const game = new Game(board);
-
-  const safeJoin = (currentId, socket) => {
-    socket.leave(previousId);
-    console.log(currentId)
-    socket.join(currentId, () => console.log(`Socket ${socket.id} joined room ${currentId}`));
-    previousId = currentId;
-  }
-
-  io.emit('documents', Object.keys(documents));
-  console.log(`Socket ${socket.id} has connected`);
-
-  socket.on('game', docId => {
-    socket.emit('game', game);
-    console.log('game', game)
+  socket.on('fetchGame', () => {
+    fetchAll(socket)
   });
 
-  socket.on('players', docId => {
-    const a = game.getPlayers()
-    socket.emit('game', a);
-    console.log('get players', a)
+  socket.on('fetchPlayers', () => {
+    fetchAll(socket)
   });
 
-  socket.on('addPlayer', name => {
-    game.addPlayer(name)
-    socket.emit('game', 'success');
-    console.log('add player', game.getPlayers())
+  socket.on('addPlayer', (name, cash = 500) => {
+    game.addPlayer({name, cash})
+    fetchAll(socket)
   });
 
-
-
-
-
-  socket.on('getDoc', docId => {
-    safeJoin(docId, socket);
-    socket.emit('document', documents[docId]);
+  socket.on('giveOneTo', (name) => {
+    game.drawOneAndGiveTo(name)
+    fetchAll(socket)
   });
 
-  socket.on('addDoc', doc => {
-    console.log(game)
-    documents[doc.id] = doc;
-    safeJoin(doc.id, socket);
-    io.emit('documents', Object.keys(documents));
-    socket.emit('document', doc);
-  });
-
-  socket.on('editDoc', doc => {
-    documents[doc.id] = doc;
-    socket.to(doc.id).emit('document', doc);
-  });
-})
-
-httpServer.listen(4444, () => {
-  console.log('Listening on port 4444');
 });
+
+const fetchAll = (socket) => {
+  socket.emit('fetchGame', game)
+  socket.emit('fetchPlayers', game.getPlayers())
+}

@@ -18,8 +18,6 @@
  * BROWSER POLYFILLS
  */
 
-(window as any).global = window;
-
 /** IE9, IE10 and IE11 requires all of the following polyfills. **/
 // import 'core-js/es6/symbol';
 // import 'core-js/es6/object';
@@ -38,7 +36,7 @@
 
 /**
  * If the application will be indexed by Google Search, the following is required.
- * Googlebot uses models renderer based on Chrome 41.
+ * Googlebot uses a renderer based on Chrome 41.
  * https://developers.google.com/search/docs/guides/rendering
  **/
 // import 'core-js/es6/array';

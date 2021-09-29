@@ -11,8 +11,14 @@ export class Game {
     return this.board.players;
   }
 
-  addPlayer(name){
-    this.board.newPlayer(new Player(name, 200));
+  addPlayer({name, cash}){
+    const a = new Player(name, cash);
+    this.board.newPlayer(a);
+  }
+
+  drawOneAndGiveTo(playerName) {
+    const card = this.board.drawOneFromDeck();
+    this.board.giveCardTo(card, playerName)
   }
 
   calculatePoints(player) {}

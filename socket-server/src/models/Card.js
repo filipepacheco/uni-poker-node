@@ -1,4 +1,4 @@
 class Card {
-  number;
+  value;
   suit;
 }

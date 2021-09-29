@@ -7,7 +7,7 @@ class Board {
   deck: Card[];
 }
 
-class Player {
+export class Player {
   name: string;
   deck: Card[];
   cash: number;
