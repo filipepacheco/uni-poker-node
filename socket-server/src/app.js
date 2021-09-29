@@ -16,19 +16,25 @@ io.on("connection", (socket) => {
   console.log('connected')
 
   socket.on('fetchGame', () => {
+    console.log('fetchGame')
+
     fetchAll(socket)
   });
 
   socket.on('fetchPlayers', () => {
+    console.log('fetchPlayers')
     fetchAll(socket)
   });
 
   socket.on('addPlayer', (name, cash = 500) => {
-    game.addPlayer({name, cash})
+    console.log('addPlayer')
+    const {id} = socket
+    game.addPlayer({id, name, cash})
     fetchAll(socket)
   });
 
   socket.on('giveOneTo', (name) => {
+    console.log('giveOneTo')
     game.drawOneAndGiveTo(name)
     fetchAll(socket)
   });

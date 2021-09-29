@@ -1,9 +1,38 @@
-<div class='sidenav'>
-  <span (click)='addPlayer("filipe")'>+ Player Filipe</span>
-  <span (click)='addPlayer("jayme")'>+ Player Jayme</span>
-  <span (click)='getGame()'>Get Game</span>
-  <span (click)='getPlayers()'>Get Players</span>
-  <span (click)='giveOneTo("jayme")'>Give 1 to Jayme</span>
-  <span (click)='giveOneTo("filipe")'>Give 1 to Filipe</span>
-<!--  <span [class.selected]='docId === currentDoc' (click)='loadDoc(docId)' *ngFor='let docId of documents | async'>{{ docId }}</span>-->
+<div>
+
+  <div style="display: inline-grid">
+    <h3>
+      Commands
+    </h3>
+    <button (click)='addPlayer("filipe")'>+ Player Filipe</button><br><br>
+    <button (click)='addPlayer("jayme")'>+ Player Jayme</button><br><br>
+    <button (click)='getGame()'>Get Game</button><br><br>
+    <button (click)='getPlayers()'>Get Players</button><br><br>
+    <button (click)='giveOneTo("jayme")'>Give 1 to Jayme</button><br><br>
+    <button (click)='giveOneTo("filipe")'>Give 1 to Filipe</button><br><br>
+  </div>
+  <div style="display: inline-grid">
+    <h3>Players</h3>
+    <span *ngFor='let player of currentPlayers'>
+      <b>ID</b>: {{ player.id }}<br>
+      <b>Name</b>: {{ player.name}}<br>
+      <b>Cash</b>: {{ player.cash }}<br>
+      <b>Cards</b>:<br>
+      <div *ngFor="let card of player.deck">
+        {{ card.suit }}, {{ card.value }}<br>
+      </div>
+
+      <br><br></span>
+  </div>
+  <div style="display: inline-grid">
+    <h3>Board</h3>
+    <span>
+      <div *ngIf="currentGame !== undefined">
+        <b>Cards</b>:
+        <div *ngFor="let card of currentGame.board.deck._stack">
+          {{ card.suit }}, {{ card.value }}<br>
+        </div>
+      </div>
+      <br></span>
+  </div>
 </div>

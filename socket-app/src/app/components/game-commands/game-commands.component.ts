@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {GameService} from '../../services/game.service';
 import {Game, Player} from '../../models/game';
 
@@ -11,6 +11,7 @@ import {Game, Player} from '../../models/game';
 export class GameCommandsComponent implements OnInit, OnDestroy {
   currentGame: Game;
   currentPlayers: Player[];
+  players: Observable<Player[]>;
   private _gameSub: Subscription;
   private _playersSub: Subscription;
 
@@ -18,12 +19,14 @@ export class GameCommandsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.gameService.fetchGame();
+    this.players = this.gameService.players;
     this._gameSub = this.gameService.onFetchGame().subscribe((data: any) => this.currentGame = data);
     this._playersSub = this.gameService.onFetchPlayers().subscribe((data: any) => this.currentPlayers = data);
   }
 
   getGame() {
     console.log(this.currentGame);
+    console.log(this.players);
   }
 
   getPlayers() {

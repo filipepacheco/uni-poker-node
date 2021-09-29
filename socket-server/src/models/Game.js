@@ -11,8 +11,8 @@ export class Game {
     return this.board.players;
   }
 
-  addPlayer({name, cash}){
-    const a = new Player(name, cash);
+  addPlayer({id, name, cash}){
+    const a = new Player(id, name, cash);
     this.board.newPlayer(a);
   }
 

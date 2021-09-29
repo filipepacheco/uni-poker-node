@@ -4,16 +4,21 @@ export class Game {
 
 class Board {
   players: Player[];
-  deck: Card[];
+  deck: Deck;
 }
 
 export class Player {
+  id: string;
   name: string;
   deck: Card[];
   cash: number;
 }
 
+class Deck {
+  _stack: Card[];
+}
+
 class Card {
-  number: number;
+  value: number;
   suit: string;
 }
