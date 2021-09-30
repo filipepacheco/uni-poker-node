@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
+import {Injectable} from "@angular/core";
 
-import { Socket } from "ngx-socket-io";
+import {Socket} from "ngx-socket-io";
 
-import { Game, Player } from "../models/game";
+import {Game, Player} from "../models/game";
 
 @Injectable({
   providedIn: "root",
@@ -27,11 +27,11 @@ export class GameService {
     return this.socket.fromEvent("fetchGame");
   }
 
-  addPlayer(name) {
+  addPlayer(name: string) {
     this.socket.emit("addPlayer", name);
   }
 
-  giveOneTo(name) {
+  giveOneTo(name: string) {
     this.socket.emit("giveOneTo", name);
   }
 
