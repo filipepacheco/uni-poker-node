@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,16 +9,23 @@ import { GameService } from '../services/game.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private gameService: GameService ) { }
+  constructor(private gameService: GameService,
+    private router: Router) {}
 
-  name: string = ''
+  count: number = 0;
+  name: string = '';
 
   ngOnInit() {
   }
 
   initGame(){
-    console.log(this.name)
     this.gameService.addPlayer(this.name);
+    if (this.count == 0){
+      this.gameService.joinRoom();
+      this.count++;
+    }
+    this.router.navigate(["/", "game"]);
   }
-
+  
+ 
 }

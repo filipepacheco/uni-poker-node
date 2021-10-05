@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -23,7 +24,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
   imports: [BrowserModule, SocketIoModule.forRoot(config), FormsModule,
     MatInputModule,
     MatButtonModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

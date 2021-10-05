@@ -18,6 +18,8 @@ export class GameCommandsComponent implements OnInit, OnDestroy {
 
   constructor(private gameService: GameService) {}
 
+  imagePath = '/assets/table.png'
+
   ngOnInit() {
     this.gameService.fetchGame();
     this.players = this.gameService.players;

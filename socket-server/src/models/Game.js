@@ -27,7 +27,7 @@ export class Game {
     const newPlayer = new Player(id, name, cash);
     this.board.newPlayer(newPlayer);
     this.numPlayers++;
-
+    console.log(newPlayer);
     return newPlayer;
   }
 
