@@ -1,20 +1,29 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
-import { GameService } from "../../services/game.service";
-import { Game, Player } from "../../models/game";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { GameService } from '../../services/game.service';
+import { ACTIONS, Game, Player } from '../../models/game';
 
 @Component({
-  selector: "app-game-commands-list",
-  templateUrl: "./game-commands.component.html",
-  styleUrls: ["./game-commands.component.css"],
+  selector: 'app-game-commands-list',
+  templateUrl: './game-commands.component.html',
+  styleUrls: ['./game-commands.component.css'],
 })
 export class GameCommandsComponent implements OnInit, OnDestroy {
   currentGame: Game;
   currentPlayers: Player[];
   players: Observable<Player[]>;
+  chosenAction: ACTIONS;
+  actionsNames: string[] = [
+    'NOTHING',
+    'CHECK',
+    'BET',
+    'GIVE_UP',
+    'PAY',
+    'RISE',
+  ];
   private _gameSub: Subscription;
   private _playersSub: Subscription;
-  playerName: Player["name"];
+  playerName: Player['name'];
 
   constructor(private gameService: GameService) {}
 
@@ -37,6 +46,14 @@ export class GameCommandsComponent implements OnInit, OnDestroy {
 
   getPlayers() {
     console.log(this.currentPlayers);
+  }
+
+  playerReady() {
+    this.gameService.playerReady();
+  }
+
+  chooseAction() {
+    this.gameService.doAction(this.chosenAction);
   }
 
   addPlayer() {

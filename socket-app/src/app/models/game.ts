@@ -5,12 +5,14 @@ export class Game {
   shift: number;
   position: number;
   numPlayers: number;
+  readyCount: number;
   currentPlayer = Player;
+  logs = [];
 }
 
 class Board {
   players: Player[];
-  deck: Deck;
+  deck: Card[];
 }
 
 export class Player {
@@ -18,6 +20,17 @@ export class Player {
   name: string;
   deck: Card[];
   cash: number;
+  action: ACTIONS;
+  ready: boolean;
+}
+
+export enum ACTIONS {
+  NOTHING,
+  CHECK,
+  BET,
+  GIVE_UP,
+  PAY,
+  RISE,
 }
 
 class Deck {

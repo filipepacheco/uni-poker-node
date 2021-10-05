@@ -1,8 +1,11 @@
+import { ACTIONS } from "./util/actions.enum.js";
+
 export class Player {
   id;
   name;
   deck = [];
   cash;
+  action = ACTIONS.NOTHING;
 
   constructor(id, name, cash) {
     this.id = id;
@@ -10,9 +13,31 @@ export class Player {
     this.name = name;
   }
 
-  check() {}
-  bet() {}
-  giveUp() {}
-  pay() {}
-  rise() {}
+  idle() {
+    return this.action === ACTIONS.NOTHING || this.action === "";
+  }
+
+  doAction(action) {
+    this.action = ACTIONS[action];
+  }
+
+  check() {
+    this.action = ACTIONS.CHECK;
+  }
+
+  bet() {
+    this.action = ACTIONS.BET;
+  }
+
+  giveUp() {
+    this.action = ACTIONS.GIVE_UP;
+  }
+
+  pay() {
+    this.action = ACTIONS.PAY;
+  }
+
+  rise() {
+    this.action = ACTIONS.RISE;
+  }
 }

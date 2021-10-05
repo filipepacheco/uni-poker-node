@@ -4,15 +4,34 @@
     <h3>
       Commands
     </h3>
-    <button (click)='joinRoom()'>Join Poker Room</button><br><br>
+    <button (click)='joinRoom()'>Join Poker Room</button>
+    <br><br>
     <label>Player Name</label>
-    <input [(ngModel)]="playerName" />
-    <button (click)='addPlayer()'>Add Player</button><br><br>
-    <button (click)='getGame()'>Get Game</button><br><br>
-    <button (click)='getPlayers()'>Get Players</button><br><br>
-    <button (click)='giveOneTo("jayme")'>Give 1 to Jayme</button><br><br>
-    <button (click)='giveOneTo("filipe")'>Give 1 to Filipe</button><br><br>
-    <button (click)='nextPlayer()'>Next</button><br><br>
+    <input [(ngModel)]="playerName"/>
+    <button (click)='addPlayer()'>Add Player</button>
+    <br><br>
+    <button (click)='getGame()'>Get Game</button>
+    <br><br>
+    <button (click)='getPlayers()'>Get Players</button>
+    <br><br>
+    <button (click)='giveOneTo("jayme")'>Give 1 to Jayme</button>
+    <br><br>
+    <button (click)='giveOneTo("filipe")'>Give 1 to Filipe</button>
+    <br><br>
+    <button (click)='nextPlayer()'>Next</button>
+    <br><br>
+    <button (click)='playerReady()'>Ready</button>
+    <br><br>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+      [(ngModel)]="chosenAction">
+      <mat-radio-button class="example-radio-button" *ngFor="let action of actionsNames" [value]="action">
+        {{action}}
+      </mat-radio-button>
+    </mat-radio-group>
+    <button (click)='chooseAction()'>Choose Action</button>
+    <br><br>
   </div>
   <div style="display: inline-grid;margin-right: 50px;">
     <h3>Players</h3>
@@ -20,6 +39,8 @@
       <b>ID</b>: {{ player.id }}<br>
       <b>Name</b>: {{ player.name}}<br>
       <b>Cash</b>: {{ player.cash }}<br>
+      <b>Action</b>: {{ player.action }}<br>
+      <b>Ready</b>: {{ player.ready }}<br>
       <b>Cards</b>:<br>
       <div *ngFor="let card of player.deck">
         {{ card.suit }}, {{ card.value }}<br>
@@ -32,19 +53,23 @@
     <span>
       <div *ngIf="currentGame !== undefined">
         <b>Cards</b>:
-        <div *ngFor="let card of currentGame.board.deck._stack">
+        <div *ngFor="let card of currentGame.board.deck">
           {{ card.suit }}, {{ card.value }}<br>
         </div>
       </div>
       <br></span>
-  </div><div style="display: inline-grid;margin-right: 50px;">
-  <h3>Game</h3>
-  <span>
+  </div>
+  <div style="display: inline-grid;margin-right: 50px;">
+    <h3>Game</h3>
+    Logs:
+    <span>
       <div *ngIf="currentGame !== undefined">
+        <div *ngFor='let log of currentGame.logs'> {{ log }} </div>
         <b>Round</b>: {{currentGame.round}}<br>
         <b>Shift</b>: {{currentGame.shift}}<br>
         <b>Position</b>: {{currentGame.position}}<br>
         <b>numPlayers</b>: {{currentGame.numPlayers}}<br>
+        <b>Players Ready</b>: {{currentGame.readyCount}}<br>
         <b>Current Playing</b>: {{currentGame.currentPlayer.name}}<br>
         <b>Cards</b>:
         <div *ngFor="let card of currentGame.deck._stack">
@@ -52,7 +77,7 @@
         </div>
       </div>
       <br></span>
-</div>
+  </div>
 </div>
 
 

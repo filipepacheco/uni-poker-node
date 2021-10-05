@@ -21,6 +21,12 @@ io.on("connection", (socket) => {
     fetchAll(socket);
   });
 
+  socket.on("playerReady", () => {
+    console.log("playerReady");
+    game.playerReady(socket.id);
+    fetchAll(socket);
+  });
+
   socket.on("fetchGame", () => {
     console.log("fetchGame");
     fetchAll(socket);
@@ -41,6 +47,12 @@ io.on("connection", (socket) => {
   socket.on("giveOneTo", (name) => {
     console.log("giveOneTo");
     game.drawOneAndGiveTo(name);
+    fetchAll(socket);
+  });
+
+  socket.on("doAction", (action) => {
+    console.log("doAction");
+    game.doAction(socket.id, action);
     fetchAll(socket);
   });
 
