@@ -1,6 +1,7 @@
 import { Player } from "./Player.js";
 import Deck from "card-deck";
 import stdDeck from "./util/standard-deck.js";
+import { ACTIONS } from "./util/actions.enum.js";
 
 export class Game {
   board;
@@ -10,6 +11,7 @@ export class Game {
   position = -1;
   numPlayers = 0;
   readyCount = 0;
+  minBetting = 0;
   currentPlayer = {};
   logs = ["", "", "", "", "", ""];
 
@@ -68,9 +70,13 @@ export class Game {
       this.position = 0;
     }
     this.currentPlayer = this.board.players[this.position];
+    if (this.currentPlayer.action === ACTIONS.GIVE_UP) {
+      return this.nextPlayer();
+    }
 
     this.shift++;
     this.log("idle " + this.currentPlayer.idle());
+
     if (!this.currentPlayer.idle()) {
       this.round++;
       this.clearActions();
@@ -84,6 +90,12 @@ export class Game {
       this.board.deck.push(this.drawOneFromDeck());
       this.board.deck.push(this.drawOneFromDeck());
       this.board.deck.push(this.drawOneFromDeck());
+    }
+    if (this.round === 2) {
+      // end of the match
+      // calculate scores
+      // define the winner
+      // ignore all the players who "give_up"
     }
   }
 
@@ -108,7 +120,7 @@ export class Game {
     }
   }
 
-  doAction(playerId, action) {
+  doAction(playerId, action, playerBetting) {
     this.log(playerId);
     this.findPlayerBy("id", playerId, (player) => {
       if (player !== this.currentPlayer) {
@@ -116,26 +128,33 @@ export class Game {
         return;
       }
 
-      player.doAction(action);
-      this.log("player do action " + action);
+      if (playerBetting < this.minBetting)
+        return this.log("betting should be >= " + this.minBetting);
 
       if (action === "RISE") {
+        if (playerBetting <= this.minBetting)
+          return this.log("raise should be > " + this.minBetting);
         this.log(action);
         this.clearActionsExcept(playerId);
+        this.minBetting = playerBetting;
       }
+
+      player.doAction(action, playerBetting);
+      this.log("player do action " + action);
+
       this.nextPlayer();
     });
   }
 
   clearActionsExcept(playerId) {
     const players = this.getPlayers().filter(
-      (p) => p.id !== playerId && p.action !== "GIVE_UP"
+      (p) => p.id !== playerId && p.action !== ACTIONS.GIVE_UP
     );
-    players.forEach((p) => p.doAction("NOTHING"));
+    players.forEach((p) => p.doAction(ACTIONS.NOTHING));
   }
 
   clearActions() {
-    this.getPlayers().forEach((p) => p.doAction("NOTHING"));
+    this.getPlayers().forEach((p) => p.doAction(ACTIONS.GIVE_UP));
   }
 
   calculatePoints(player) {}

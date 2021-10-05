@@ -1,8 +1,8 @@
 export const ACTIONS = {
-  NOTHING: "nothing",
-  CHECK: "check",
-  BET: "bet",
-  GIVE_UP: "giveUp",
-  PAY: "pay",
-  RISE: "rise",
-}
+  NOTHING: "NOTHING",
+  CHECK: "CHECK",
+  BET: "BET",
+  GIVE_UP: "GIVE_UP",
+  PAY: "PAY",
+  RISE: "RISE",
+};

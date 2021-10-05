@@ -13,21 +13,15 @@ export class GameCommandsComponent implements OnInit, OnDestroy {
   currentPlayers: Player[];
   players: Observable<Player[]>;
   chosenAction: ACTIONS;
-  actionsNames: string[] = [
-    'NOTHING',
-    'CHECK',
-    'BET',
-    'GIVE_UP',
-    'PAY',
-    'RISE',
-  ];
+  playerBetting: number = 100;
+  actionsNames: string[] = ['NOTHING', 'GIVE_UP', 'PAY', 'RISE'];
   private _gameSub: Subscription;
   private _playersSub: Subscription;
   playerName: Player['name'];
 
   constructor(private gameService: GameService) {}
 
-  imagePath = '/assets/table.png'
+  imagePath = '/assets/table.png';
 
   ngOnInit() {
     this.gameService.fetchGame();
@@ -53,7 +47,7 @@ export class GameCommandsComponent implements OnInit, OnDestroy {
   }
 
   chooseAction() {
-    this.gameService.doAction(this.chosenAction);
+    this.gameService.doAction(this.chosenAction, this.playerBetting);
   }
 
   addPlayer() {

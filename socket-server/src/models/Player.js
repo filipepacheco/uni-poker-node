@@ -6,6 +6,7 @@ export class Player {
   deck = [];
   cash;
   action = ACTIONS.NOTHING;
+  betting;
 
   constructor(id, name, cash) {
     this.id = id;
@@ -17,8 +18,9 @@ export class Player {
     return this.action === ACTIONS.NOTHING || this.action === "";
   }
 
-  doAction(action) {
+  doAction(action, betting) {
     this.action = ACTIONS[action];
+    if (betting) this.betting = betting;
   }
 
   check() {

@@ -22,6 +22,7 @@ export class Player {
   cash: number;
   action: ACTIONS;
   ready: boolean;
+  betting: number;
 }
 
 export enum ACTIONS {

@@ -50,9 +50,9 @@ io.on("connection", (socket) => {
     fetchAll(socket);
   });
 
-  socket.on("doAction", (action) => {
+  socket.on("doAction", (action, betting) => {
     console.log("doAction");
-    game.doAction(socket.id, action);
+    game.doAction(socket.id, action, betting);
     fetchAll(socket);
   });
 

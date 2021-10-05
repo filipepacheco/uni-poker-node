@@ -22,6 +22,8 @@
     <br><br>
     <button (click)='playerReady()'>Ready</button>
     <br><br>
+    <label>Betting</label>
+    <input [(ngModel)]="playerBetting"/>
     <mat-radio-group
       aria-labelledby="example-radio-group-label"
       class="example-radio-group"
@@ -39,6 +41,7 @@
       <b>ID</b>: {{ player.id }}<br>
       <b>Name</b>: {{ player.name}}<br>
       <b>Cash</b>: {{ player.cash }}<br>
+      <b>Betting</b>: {{ player.betting }}<br>
       <b>Action</b>: {{ player.action }}<br>
       <b>Ready</b>: {{ player.ready }}<br>
       <b>Cards</b>:<br>
@@ -79,7 +82,3 @@
       <br></span>
   </div>
 </div>
-
-
-
-

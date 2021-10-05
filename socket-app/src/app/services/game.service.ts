@@ -13,8 +13,8 @@ export class GameService {
   currentGame = this.socket.fromEvent<Game>('game');
   players = this.socket.fromEvent<Player[]>('getPlayers');
 
-  doAction(action) {
-    this.socket.emit('doAction', action);
+  doAction(action, betting) {
+    this.socket.emit('doAction', action, betting);
   }
 
   // emit event
