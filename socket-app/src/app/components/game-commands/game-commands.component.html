@@ -1,29 +1,17 @@
 <div>
 
   <div style="display: inline-grid;margin-right: 50px;">
-    <h3>
-      Commands
-    </h3>
-    <button (click)='joinRoom()'>Join Poker Room</button>
+    <h3>Commands</h3>
+    <div *ngIf="currentGame !== undefined && !this.currentPlayer.ready">
+      <button mat-raised-button color="primary" (click)='playerReady()'>Ready</button>
+    </div>
+    <hr>
+    <hr>
     <br><br>
-    <label>Player Name</label>
-    <input [(ngModel)]="playerName"/>
-    <button (click)='addPlayer()'>Add Player</button>
-    <br><br>
-    <button (click)='getGame()'>Get Game</button>
-    <br><br>
-    <button (click)='getPlayers()'>Get Players</button>
-    <br><br>
-    <button (click)='giveOneTo("jayme")'>Give 1 to Jayme</button>
-    <br><br>
-    <button (click)='giveOneTo("filipe")'>Give 1 to Filipe</button>
-    <br><br>
-    <button (click)='nextPlayer()'>Next</button>
-    <br><br>
-    <button (click)='playerReady()'>Ready</button>
-    <br><br>
-    <label>Betting</label>
-    <input [(ngModel)]="playerBetting"/>
+    <mat-form-field>
+      <mat-label>Betting</mat-label>
+      <input matInput type='text' [(ngModel)]="playerBetting"/>
+    </mat-form-field>
     <mat-radio-group
       aria-labelledby="example-radio-group-label"
       class="example-radio-group"
@@ -32,23 +20,41 @@
         {{action}}
       </mat-radio-button>
     </mat-radio-group>
-    <button (click)='chooseAction()'>Choose Action</button>
+    <button mat-raised-button color="primary" (click)='chooseAction()'>Choose Action</button>
     <br><br>
   </div>
   <div style="display: inline-grid;margin-right: 50px;">
-    <h3>Players</h3>
-    <span *ngFor='let player of currentPlayers'>
-      <b>ID</b>: {{ player.id }}<br>
-      <b>Name</b>: {{ player.name}}<br>
-      <b>Cash</b>: {{ player.cash }}<br>
-      <b>Betting</b>: {{ player.betting }}<br>
-      <b>Action</b>: {{ player.action }}<br>
-      <b>Ready</b>: {{ player.ready }}<br>
+    <h3>Me</h3>
+    <div>
+      <b>ID</b>: {{ currentPlayer.id }}<br>
+      <b>Name</b>: {{ currentPlayer.name}}<br>
+      <b>Cash</b>: {{ currentPlayer.cash }}<br>
+      <b>Betting</b>: {{ currentPlayer.betting }}<br>
+      <b>Action</b>: {{ currentPlayer.action }}<br>
+      <b>Ready</b>: {{ currentPlayer.ready }}<br>
       <b>Cards</b>:<br>
-      <div *ngFor="let card of player.deck">
+      <div *ngFor="let card of currentPlayer.deck">
         {{ card.suit }}, {{ card.value }}<br>
       </div>
+    </div>
 
+    <br><br>
+  </div>
+  <div style="display: inline-grid;margin-right: 50px;">
+    <h3>Other Players</h3>
+    <span *ngFor='let player of currentPlayers'>
+      <div *ngIf="currentPlayer.id !== player.id">
+        <b>ID</b>: {{ player.id }}<br>
+        <b>Name</b>: {{ player.name}}<br>
+        <b>Cash</b>: {{ player.cash }}<br>
+        <b>Betting</b>: {{ player.betting }}<br>
+        <b>Action</b>: {{ player.action }}<br>
+        <b>Ready</b>: {{ player.ready }}<br>
+        <b>Cards</b>:<br>
+        <div *ngFor="let card of player.deck">
+            Hidden Suit, Hidden Value<br>
+        </div>
+      </div>
       <br><br></span>
   </div>
   <div style="display: inline-grid;margin-right: 50px;">
@@ -71,7 +77,7 @@
         <b>Round</b>: {{currentGame.round}}<br>
         <b>Shift</b>: {{currentGame.shift}}<br>
         <b>Position</b>: {{currentGame.position}}<br>
-        <b>numPlayers</b>: {{currentGame.numPlayers}}<br>
+        <b>Number of Players</b>: {{currentGame.numPlayers}}<br>
         <b>Players Ready</b>: {{currentGame.readyCount}}<br>
         <b>Current Playing</b>: {{currentGame.currentPlayer.name}}<br>
         <b>Cards</b>:

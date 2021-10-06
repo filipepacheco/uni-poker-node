@@ -13,7 +13,7 @@ export class Game {
   readyCount = 0;
   minBetting = 0;
   currentPlayer = {};
-  logs = ["", "", "", "", "", ""];
+  logs = ["", "", "", "", "", "", "", "", ""];
 
   log(msg) {
     console.log(msg);
@@ -48,7 +48,7 @@ export class Game {
     const newPlayer = new Player(id, name, cash);
     this.board.newPlayer(newPlayer);
     this.numPlayers++;
-    console.log(newPlayer);
+    this.log("added player with id " + newPlayer.id);
     return newPlayer;
   }
 
@@ -59,7 +59,7 @@ export class Game {
   drawOneAndGiveTo(playerId) {
     this.findPlayerBy("id", playerId, (p) => {
       const card = this.drawOneFromDeck();
-      this.log("gave " + card.value + card.suit + " to player " + p.id);
+      this.log("Gave " + card.value + " " + card.suit + " to player " + p.id);
       p.deck.push(card);
     });
   }
@@ -75,8 +75,6 @@ export class Game {
     }
 
     this.shift++;
-    this.log("idle " + this.currentPlayer.idle());
-
     if (!this.currentPlayer.idle()) {
       this.round++;
       this.clearActions();
@@ -86,12 +84,17 @@ export class Game {
 
   distributeCardsToBoard() {
     if (this.round === 1) {
-      this.log("foi");
+      this.log("Round 2");
+      this.board.deck.push(this.drawOneFromDeck());
+      this.board.deck.push(this.drawOneFromDeck());
       this.board.deck.push(this.drawOneFromDeck());
       this.board.deck.push(this.drawOneFromDeck());
       this.board.deck.push(this.drawOneFromDeck());
     }
     if (this.round === 2) {
+      this.log("Round 3");
+      this.log("END OF THE GAME!");
+
       // end of the match
       // calculate scores
       // define the winner

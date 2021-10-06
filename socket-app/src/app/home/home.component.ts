@@ -5,27 +5,19 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-
-  constructor(private gameService: GameService,
-    private router: Router) {}
+  constructor(private gameService: GameService, private router: Router) {}
 
   count: number = 0;
   name: string = '';
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  initGame(){
+  initGame() {
+    this.gameService.joinRoom();
     this.gameService.addPlayer(this.name);
-    if (this.count == 0){
-      this.gameService.joinRoom();
-      this.count++;
-    }
-    this.router.navigate(["/", "game"]);
+    this.router.navigate(['/', 'game']);
   }
-  
- 
 }

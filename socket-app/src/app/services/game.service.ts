@@ -52,4 +52,8 @@ export class GameService {
   onFetchPlayers() {
     return this.socket.fromEvent('fetchPlayers');
   }
+
+  onFetchPlayer() {
+    return this.socket.fromEvent('fetchPlayer');
+  }
 }

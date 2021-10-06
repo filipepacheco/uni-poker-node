@@ -11,12 +11,14 @@ import { ACTIONS, Game, Player } from '../../models/game';
 export class GameCommandsComponent implements OnInit, OnDestroy {
   currentGame: Game;
   currentPlayers: Player[];
+  currentPlayer: Player;
   players: Observable<Player[]>;
   chosenAction: ACTIONS;
   playerBetting: number = 100;
   actionsNames: string[] = ['NOTHING', 'GIVE_UP', 'PAY', 'RISE'];
   private _gameSub: Subscription;
   private _playersSub: Subscription;
+  private _playerSub: Subscription;
   playerName: Player['name'];
 
   constructor(private gameService: GameService) {}
@@ -32,6 +34,9 @@ export class GameCommandsComponent implements OnInit, OnDestroy {
     this._playersSub = this.gameService
       .onFetchPlayers()
       .subscribe((data: any) => (this.currentPlayers = data));
+    this._playerSub = this.gameService
+      .onFetchPlayer()
+      .subscribe((data: any) => (this.currentPlayer = data));
   }
 
   getGame() {

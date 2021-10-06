@@ -40,8 +40,9 @@ io.on("connection", (socket) => {
   socket.on("addPlayer", (name, cash = 500) => {
     console.log("addPlayer");
     const { id } = socket;
-    game.addPlayer({ id, name, cash });
+    const newPlayer = game.addPlayer({ id, name, cash });
     fetchAll(socket);
+    return newPlayer;
   });
 
   socket.on("giveOneTo", (name) => {
@@ -66,4 +67,7 @@ io.on("connection", (socket) => {
 const fetchAll = (socket) => {
   io.to("pokerRoom").emit("fetchGame", game);
   io.to("pokerRoom").emit("fetchPlayers", game.getPlayers());
+  game.getPlayers().forEach((p) => {
+    io.to(p.id).emit("fetchPlayer", p);
+  });
 };
